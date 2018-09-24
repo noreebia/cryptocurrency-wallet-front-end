@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import './App.css';
 import './Fieldset';
-// import banner from './banner.png';
-import banner from './banner2.jpg';
 import Fieldset from './Fieldset';
 
 class App extends Component {
@@ -27,7 +25,7 @@ class App extends Component {
 
     return (
       <div className="App">
-        <img src={banner} id="banner"></img>
+        <div id= "bannerImage"></div>
         <h1>CRYPTO WALLET</h1>
         <p>Free cryptocurrency wallet service</p>
         <div id="credentialsInputForm">
