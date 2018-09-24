@@ -8,10 +8,12 @@ class Fieldset extends Component {
         let inputType = this.props.isPasswordField === true ? "password" : "text";
 
         return (
-            <div>
-                <label>{this.props.labelName}</label>
-                <input type={inputType}></input>
-            </div>
+            <tr>
+                <td>{this.props.labelName}</td>
+                <td>
+                    <input type={inputType}></input>
+                </td>
+            </tr>
         )
     }
 }
