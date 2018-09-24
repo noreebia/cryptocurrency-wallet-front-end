@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import './App.css';
 import './Fieldset';
+// import banner from './banner.png';
+import banner from './banner2.jpg';
 import Fieldset from './Fieldset';
 
 class App extends Component {
@@ -12,13 +14,12 @@ class App extends Component {
 
   componentDidMount() {
     this.setState({
-      tableWidth: this.tableRef.current.offsetWidth
+      tableWidth: this.tableRef.current.clientWidth
     });
   }
 
   render() {
     let buttonWidth = this.state.tableWidth / 2;
-    console.log(this.state.tableWidth);
 
     const buttonStyle = {
       width: buttonWidth
@@ -26,9 +27,12 @@ class App extends Component {
 
     return (
       <div className="App">
+        <img src={banner} id="banner"></img>
+        <h1>CRYPTO WALLET</h1>
+        <p>Free cryptocurrency wallet service</p>
         <div id="credentialsInputForm">
-          <table >
-            <tbody ref={this.tableRef}>
+          <table ref={this.tableRef}>
+            <tbody >
               <Fieldset labelName="ID" isPasswordField={false} />
               <Fieldset labelName="PW" isPasswordField={true} />
             </tbody>
