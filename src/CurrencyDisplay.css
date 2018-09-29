@@ -1,0 +1,24 @@
+/* h1{
+    float: left;
+}
+
+table {
+    float: left;
+} */
+
+.currencyDisplayDiv {
+    text-align: center;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.currencyNameDisplay {
+    border-style: solid;
+
+}
+
+.currencyDisplayTable{
+    /* display: inline-block; */
+    float: left;
+}

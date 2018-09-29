@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import './App.css';
 import './Fieldset';
 import Fieldset from './Fieldset';
+import CurrencyDisplay from './CurrencyDisplay';
 
 class App extends Component {
   constructor(props) {
@@ -27,7 +28,7 @@ class App extends Component {
       <div className="App">
         <div id= "bannerImage"></div>
         <h1>CRYPTO WALLET</h1>
-        <p>Free cryptocurrency wallet service</p>
+        <p>Free cryptocurrency wallet - deposit and withdraw cryptocurrencies!</p>
         <div id="credentialsInputForm">
           <table ref={this.tableRef}>
             <tbody >
@@ -39,6 +40,7 @@ class App extends Component {
         <button style={buttonStyle}>SIGN UP</button>
         <button style={buttonStyle}>LOG IN</button>
         <hr></hr>
+        <CurrencyDisplay currencyName = "Bitcoin"/>
       </div>
     );
   }
