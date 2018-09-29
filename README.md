@@ -1,3 +1,3 @@
-Front-end for my Distributed Systems class term project.
+Front-end React server for my distributed systems class term project.
 
 This project was bootstrapped with [Create React App](https://github.com/facebookincubator/create-react-app).
