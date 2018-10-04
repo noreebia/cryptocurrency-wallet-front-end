@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import './CurrencyDisplay.css';
 
+
+
 class CurrencyDisplay extends Component {
     constructor(props) {
         super(props);
@@ -14,14 +16,28 @@ class CurrencyDisplay extends Component {
 
     }
 
+    getRandomRgb = () => {
+        return Math.floor(Math.random() * (255 - 150 + 1)) + 150;
+    }
+
+    getRandomColor = () => {
+        return {
+            backgroundColor: 'rgb(' + this.getRandomRgb() + ',' + this.getRandomRgb() + ',' + this.getRandomRgb() + ')'
+        };
+    }
+
+
+
     render = () => {
         return (
             <div className="currencyDisplayDiv">
-                <div className="currencyNameDisplay">
-                    <h1 >{this.props.currencyName}</h1>
+                <div >
+                    <div className="currencyNameDisplay" style={this.getRandomColor()}>
+                        <h1 >{this.props.currencyName}</h1>
+                    </div>
                 </div>
-                <div classname="currencyDisplayTable">
-                    <table >
+                <div >
+                    <table className="currencyDisplayTable" >
                         <tr>
                             <td>
                                 Address:
@@ -36,6 +52,18 @@ class CurrencyDisplay extends Component {
                         </td>
                             <td>
                                 {this.state.balance}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <form>
+                                    <input type="text" name="destinationAddress" className="fullWidth"></input>
+                                </form>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <button className="fullWidth">Withdraw to above address</button>
                             </td>
                         </tr>
                     </table>

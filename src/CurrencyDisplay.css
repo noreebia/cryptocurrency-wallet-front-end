@@ -14,11 +14,22 @@ table {
 }
 
 .currencyNameDisplay {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
     border-style: solid;
-
+    border-radius: 10px;
+    background-color: azure;
+    height:100%;
 }
 
 .currencyDisplayTable{
     /* display: inline-block; */
     float: left;
+    text-align: left;
+    height:100%;
+}
+
+.fullWidth {
+    width: 100%;
 }
