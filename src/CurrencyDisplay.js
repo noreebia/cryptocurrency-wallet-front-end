@@ -13,7 +13,12 @@ class CurrencyDisplay extends Component {
     }
 
     componentDidMount() {
-
+        this.setState(
+            {
+                address: "asdf",
+                balance: "fdsa"
+            }
+        )
     }
 
     getRandomRgb = () => {
@@ -26,46 +31,46 @@ class CurrencyDisplay extends Component {
         };
     }
 
-
-
     render = () => {
         return (
             <div className="currencyDisplayDiv">
                 <div >
-                    <div className="currencyNameDisplay" style={this.getRandomColor()}>
+                    <div className="currencyNameDiv" style={this.getRandomColor()}>
                         <h1 >{this.props.currencyName}</h1>
                     </div>
                 </div>
                 <div >
-                    <table className="currencyDisplayTable" >
-                        <tr>
-                            <td>
-                                Address:
-                        </td>
-                            <td>
-                                {this.state.address}
+                    <table className="currencyInfoDiv">
+                        <tbody>
+                            <tr>
+                                <td style={{textAlign: "left"}}>
+                                    Address
                             </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                Balance:
-                        </td>
-                            <td>
-                                {this.state.balance}
+                                <td style={{textAlign: "right"}}>
+                                    {this.state.address}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style={{textAlign: "left"}}>
+                                    Balance
                             </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <form>
-                                    <input type="text" name="destinationAddress" className="fullWidth"></input>
-                                </form>
+                                <td style={{textAlign: "right"}}>
+                                    {this.state.balance} BTC
                             </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <button className="fullWidth">Withdraw to above address</button>
-                            </td>
-                        </tr>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <form>
+                                        <input type="text" name="destinationAddress" className="fullWidth"></input>
+                                    </form>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <button className="fullWidth">Withdraw to above address</button>
+                                </td>
+                            </tr>
+                        </tbody>
                     </table>
                 </div>
             </div>
