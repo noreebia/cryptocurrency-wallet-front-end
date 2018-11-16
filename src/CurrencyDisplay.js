@@ -43,18 +43,18 @@ class CurrencyDisplay extends Component {
                     <table className="currencyInfoDiv">
                         <tbody>
                             <tr>
-                                <td style={{textAlign: "left"}}>
+                                <td style={{ textAlign: "left" }}>
                                     Address
                             </td>
-                                <td style={{textAlign: "right"}}>
+                                <td style={{ textAlign: "right" }}>
                                     {this.state.address}
                                 </td>
                             </tr>
                             <tr>
-                                <td style={{textAlign: "left"}}>
+                                <td style={{ textAlign: "left" }}>
                                     Balance
                             </td>
-                                <td style={{textAlign: "right"}}>
+                                <td style={{ textAlign: "right" }}>
                                     {this.state.balance} BTC
                             </td>
                             </tr>
