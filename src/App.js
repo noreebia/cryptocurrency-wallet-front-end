@@ -18,6 +18,7 @@ class App extends Component {
     this.updatePassword = this.updatePassword.bind(this);
     this.handleSignUp = this.handleSignUp.bind(this);
     this.handleLogIn = this.handleLogIn.bind(this);
+    this.handleLogOut = this.handleLogOut.bind(this);
   }
 
   componentDidMount() {
@@ -54,12 +55,18 @@ class App extends Component {
   handleLogIn() {
     axios.post("/users/validation", { username: this.state.username, password: this.state.password })
       .then((response) => {
-        let { successful } = response.data
+        let { successful , data} = response.data
         console.log(successful);
         if (successful) {
           this.setState({ isLoggedIn: true });
+        } else{
+          alert(data);
         }
       })
+  }
+
+  handleLogOut() {
+    this.setState({ isLoggedIn: false });
   }
 
   render() {
@@ -75,7 +82,8 @@ class App extends Component {
       height: '100%',
       backgroundColor: 'rgba(255,255,255, 0.9)',
       zIndex: 2,
-      display: 'block',
+      // display: 'block',
+      display: this.state.isLoggedIn ? 'none' : 'block',
       textAlign: 'center',
       // backgroundColor: 'rgba(0,0,0, 0.5)',
       // display: this.isLoggedIn ? 'none' : 'block',
@@ -83,28 +91,38 @@ class App extends Component {
     }
 
     const overlayTextStyle = {
-      display: 'flex', 
+      display: 'flex',
       justifyContent: 'center',
       alignContent: 'center',
       flexDirection: 'row'
     }
 
-  //   let greetingsOrLogin = this.state.isLoggedIn ? <p>Logged in as {this.state.username}</p> :           <table ref={this.tableRef}>
-  //   <tbody >
-  //     <tr>
-  //       <td>ID</td>
-  //       <td>
-  //         <input type="text" value={this.state.username} onChange={this.updateUsername}></input>
-  //       </td>
-  //     </tr>
-  //     <tr>
-  //       <td>PW</td>
-  //       <td>
-  //         <input type="password" value={this.state.password} onChange={this.updatePassword}></input>
-  //       </td>
-  //     </tr>
-  //   </tbody>
-  // </table>;
+    let greetingsOrLogin = this.state.isLoggedIn ?
+      <div><h2>Logged in as {this.state.username}</h2>
+        <button onClick={this.handleLogOut}>Log out</button>
+      </div>
+      :
+      <div>
+        <table ref={this.tableRef} >
+          <tbody >
+            <tr>
+              <td>ID</td>
+              <td>
+                <input type="text" value={this.state.username} onChange={this.updateUsername}></input>
+              </td>
+            </tr>
+            <tr>
+              <td>PW</td>
+              <td>
+                <input type="password" value={this.state.password} onChange={this.updatePassword}></input>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <button style={buttonStyle} onClick={this.handleSignUp} >SIGN UP</button>
+        <button style={buttonStyle} onClick={this.handleLogIn} >LOG IN</button>
+      </div>
+
 
     return (
       <div className="App">
@@ -114,31 +132,14 @@ class App extends Component {
         <h1>CRYPTO WALLET</h1>
         <p>Free cryptocurrency wallet - deposit and withdraw cryptocurrencies!</p>
         <div id="credentialsInputForm">
-          <table ref={this.tableRef}>
-            <tbody >
-              <tr>
-                <td>ID</td>
-                <td>
-                  <input type="text" value={this.state.username} onChange={this.updateUsername}></input>
-                </td>
-              </tr>
-              <tr>
-                <td>PW</td>
-                <td>
-                  <input type="password" value={this.state.password} onChange={this.updatePassword}></input>
-                </td>
-              </tr>
-            </tbody>
-          </table>
+          {greetingsOrLogin}
         </div>
-        <button style={buttonStyle} onClick={this.handleSignUp}>SIGN UP</button>
-        <button style={buttonStyle} onClick={this.handleLogIn}>LOG IN</button>
 
         <hr></hr>
 
         <div>
           <div id="overlay" style={overlayStyle}>
-            <h2 style= {overlayTextStyle}>Please log in first</h2>
+            <h2 style={overlayTextStyle}>Please log in first</h2>
           </div>
           <CurrencyDisplay currencyName="Bitcoin" />
         </div>
