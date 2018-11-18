@@ -50,23 +50,26 @@ class App extends Component {
           alert(data)
         }
       })
+      .catch(error => alert(`Server is not responding.\n${error}.`))
+
   }
 
   handleLogIn() {
     axios.post("/users/validation", { username: this.state.username, password: this.state.password })
       .then((response) => {
-        let { successful , data} = response.data
+        let { successful, data } = response.data
         console.log(successful);
         if (successful) {
           this.setState({ isLoggedIn: true });
-        } else{
+        } else {
           alert(data);
         }
       })
+      .catch(error => alert(`Server is not responding.\n${error}.`))
   }
 
   handleLogOut() {
-    this.setState({ isLoggedIn: false });
+    this.setState({ isLoggedIn: false, username: "", passowrd: "" });
   }
 
   render() {
@@ -82,12 +85,8 @@ class App extends Component {
       height: '100%',
       backgroundColor: 'rgba(255,255,255, 0.9)',
       zIndex: 2,
-      // display: 'block',
       display: this.state.isLoggedIn ? 'none' : 'block',
       textAlign: 'center',
-      // backgroundColor: 'rgba(0,0,0, 0.5)',
-      // display: this.isLoggedIn ? 'none' : 'block',
-      // opacity: 1
     }
 
     const overlayTextStyle = {
@@ -98,7 +97,7 @@ class App extends Component {
     }
 
     let greetingsOrLogin = this.state.isLoggedIn ?
-      <div><h2>Logged in as {this.state.username}</h2>
+      <div><h2>Hello, {this.state.username}</h2>
         <button onClick={this.handleLogOut}>Log out</button>
       </div>
       :
@@ -126,17 +125,13 @@ class App extends Component {
 
     return (
       <div className="App">
-
         <div id="bannerImage"></div>
-
         <h1>CRYPTO WALLET</h1>
         <p>Free cryptocurrency wallet - deposit and withdraw cryptocurrencies!</p>
         <div id="credentialsInputForm">
           {greetingsOrLogin}
         </div>
-
         <hr></hr>
-
         <div>
           <div id="overlay" style={overlayStyle}>
             <h2 style={overlayTextStyle}>Please log in first</h2>
