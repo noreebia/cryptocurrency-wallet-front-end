@@ -3,6 +3,7 @@
     display: flex;
     flex-direction: row;
     justify-content: center;
+    margin: 8px 0px 16px 0px ;
 }
 
 .currencyNameDiv {

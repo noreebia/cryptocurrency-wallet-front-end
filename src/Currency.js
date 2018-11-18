@@ -1,25 +1,7 @@
 import React, { Component } from 'react';
-import './CurrencyDisplay.css';
+import './Currency.css';
 
-
-
-class CurrencyDisplay extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            address: "",
-            balance: "",
-        };
-    }
-
-    componentDidMount() {
-        this.setState(
-            {
-                address: "asdf",
-                balance: "fdsa"
-            }
-        )
-    }
+class Currency extends Component {
 
     getRandomRgb = () => {
         return Math.floor(Math.random() * (255 - 150 + 1)) + 150;
@@ -45,18 +27,18 @@ class CurrencyDisplay extends Component {
                             <tr>
                                 <td style={{ textAlign: "left" }}>
                                     Address
-                            </td>
+                                </td>
                                 <td style={{ textAlign: "right" }}>
-                                    {this.state.address}
+                                    {this.props.address}
                                 </td>
                             </tr>
                             <tr>
                                 <td style={{ textAlign: "left" }}>
                                     Balance
-                            </td>
+                                </td>
                                 <td style={{ textAlign: "right" }}>
-                                    {this.state.balance} BTC
-                            </td>
+                                    {this.props.balance} {this.props.symbol}
+                                </td>
                             </tr>
                             <tr>
                                 <td>
@@ -78,4 +60,4 @@ class CurrencyDisplay extends Component {
     }
 }
 
-export default CurrencyDisplay;
+export default Currency;

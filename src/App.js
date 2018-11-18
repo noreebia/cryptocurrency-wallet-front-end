@@ -1,8 +1,9 @@
 import './App.css';
 import './Fieldset';
 import React, { Component } from 'react';
-import CurrencyDisplay from './CurrencyDisplay';
 import axios from 'axios';
+import Currency from "./Currency";
+
 
 class App extends Component {
   constructor(props) {
@@ -39,7 +40,6 @@ class App extends Component {
   handleSignUp() {
     axios.post("/users", { username: this.state.username, password: this.state.password })
       .then((response) => {
-        // console.log(response);
         let { successful, data } = response.data;
         console.log(response);
         console.log(data);
@@ -51,7 +51,6 @@ class App extends Component {
         }
       })
       .catch(error => alert(`Server is not responding.\n${error}.`))
-
   }
 
   handleLogIn() {
@@ -122,7 +121,6 @@ class App extends Component {
         <button style={buttonStyle} onClick={this.handleLogIn} >LOG IN</button>
       </div>
 
-
     return (
       <div className="App">
         <div id="bannerImage"></div>
@@ -136,10 +134,11 @@ class App extends Component {
           <div id="overlay" style={overlayStyle}>
             <h2 style={overlayTextStyle}>Please log in first</h2>
           </div>
-          <CurrencyDisplay currencyName="Bitcoin" />
+          <Currency currencyName="Ethereum" symbol="ETH" />
+          <Currency currencyName="KonkukCoin" symbol="KKC" />
         </div>
       </div>
-    );
+    )
   }
 }
 
