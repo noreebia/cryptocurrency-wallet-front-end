@@ -1,7 +1,36 @@
 import React, { Component } from 'react';
+import axios from "axios";
 import './Currency.css';
 
-class Currency extends Component {
+class CurrencyInfo extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            address: "",
+            balance: 0,
+            rgb: [255, 255, 255]
+        };
+        this.getRandomRgb = this.getRandomRgb.bind(this);
+    }
+    
+    componentDidMount(){
+        this.setState({rgb: [this.getRandomRgb(), this.getRandomRgb(), this.getRandomRgb()]});
+    }
+
+    componentDidUpdate() {
+        if (this.props.isLoggedIn) {
+            axios.get(`/users/${this.props.username}`)
+                .then(response => {
+                    let { address: createdAddress } = response;
+                    if(createdAddress !== null || createdAddress !== undefined){
+                        this.setState({address: createdAddress});
+                    }
+                }
+                )
+            axios.get("/users/balances", { params: { username: this.props.username } })
+            // .then(response => this.setState({balance: response}))
+        }
+    }
 
     getRandomRgb = () => {
         return Math.floor(Math.random() * (255 - 150 + 1)) + 150;
@@ -14,10 +43,14 @@ class Currency extends Component {
     }
 
     render = () => {
+
+        const addressOrButton = this.state.address !== "" ? this.state.address : <button>Create Address</button>;
+        const [r,g,b] = this.state.rgb;
+
         return (
             <div className="currencyDisplayDiv">
                 <div >
-                    <div className="currencyNameDiv" style={this.getRandomColor()}>
+                    <div className="currencyNameDiv" style= { {backgroundColor: `rgb(${r}, ${g}, ${b})`}}>
                         <h1 >{this.props.currencyName}</h1>
                     </div>
                 </div>
@@ -29,7 +62,7 @@ class Currency extends Component {
                                     Address
                                 </td>
                                 <td style={{ textAlign: "right" }}>
-                                    {this.props.address}
+                                    {addressOrButton}
                                 </td>
                             </tr>
                             <tr>
@@ -37,7 +70,7 @@ class Currency extends Component {
                                     Balance
                                 </td>
                                 <td style={{ textAlign: "right" }}>
-                                    {this.props.balance} {this.props.symbol}
+                                    {this.state.balance} {this.props.symbol}
                                 </td>
                             </tr>
                             <tr>
@@ -60,4 +93,4 @@ class Currency extends Component {
     }
 }
 
-export default Currency;
+export default CurrencyInfo;

@@ -2,7 +2,7 @@ import './App.css';
 import './Fieldset';
 import React, { Component } from 'react';
 import axios from 'axios';
-import Currency from "./Currency";
+import WalletInfo from "./WalletInfo";
 
 
 class App extends Component {
@@ -134,8 +134,7 @@ class App extends Component {
           <div id="overlay" style={overlayStyle}>
             <h2 style={overlayTextStyle}>Please log in first</h2>
           </div>
-          <Currency currencyName="Ethereum" symbol="ETH" />
-          <Currency currencyName="KonkukCoin" symbol="KKC" />
+          <WalletInfo isLoggedIn = {this.state.isLoggedIn} username = {this.state.username} />
         </div>
       </div>
     )
