@@ -12,7 +12,8 @@ class App extends Component {
       tableWidth: 0,
       isLoggedIn: false,
       username: '',
-      password: ''
+      password: '',
+      userAddress: ''
     };
     this.tableRef = React.createRef();
     this.updateUsername = this.updateUsername.bind(this);
@@ -20,12 +21,24 @@ class App extends Component {
     this.handleSignUp = this.handleSignUp.bind(this);
     this.handleLogIn = this.handleLogIn.bind(this);
     this.handleLogOut = this.handleLogOut.bind(this);
+    this.requestAddressCreation = this.requestAddressCreation.bind(this);
   }
 
   componentDidMount() {
     this.setState({
       tableWidth: this.tableRef.current.clientWidth
     });
+  }
+
+  requestAddressCreation() {
+    axios.post(`users/${this.state.username}/addresses`)
+      .then( (response) => {
+        let {successful, data} = response.data;
+        if(successful){
+          this.setState({userAddress: data});
+        }
+      })
+      .catch(error => alert(error))
   }
 
   updateUsername(event) {
@@ -56,7 +69,7 @@ class App extends Component {
   handleLogIn() {
     axios.post("/users/validation", { username: this.state.username, password: this.state.password })
       .then((response) => {
-        let { successful, data } = response.data
+        let { successful, data } = response.data;
         console.log(successful);
         if (successful) {
           this.setState({ isLoggedIn: true });
@@ -64,11 +77,24 @@ class App extends Component {
           alert(data);
         }
       })
+      .then(() => {
+        if (this.state.isLoggedIn) {
+          axios.get(`/users/${this.state.username}/addresses`)
+            .then((response) => {
+              console.log(response);
+              let { successful, data } = response.data;
+              if (successful) {
+                this.setState({ userAddress: data });
+              }
+            })
+            .catch(error => alert(error))
+        }
+      })
       .catch(error => alert(`Server is not responding.\n${error}.`))
   }
 
   handleLogOut() {
-    this.setState({ isLoggedIn: false, username: "", passowrd: "" });
+    this.setState({ isLoggedIn: false, username: "", passowrd: "", userAddress: "" });
   }
 
   render() {
@@ -121,6 +147,8 @@ class App extends Component {
         <button style={buttonStyle} onClick={this.handleLogIn} >LOG IN</button>
       </div>
 
+    const addressOrButton = this.state.userAddress != '' ? <h3>Address: {this.state.userAddress}</h3> : <button onClick={this.requestAddressCreation}>Create Address</button>
+
     return (
       <div className="App">
         <div id="bannerImage"></div>
@@ -134,7 +162,8 @@ class App extends Component {
           <div id="overlay" style={overlayStyle}>
             <h2 style={overlayTextStyle}>Please log in first</h2>
           </div>
-          <WalletInfo isLoggedIn = {this.state.isLoggedIn} username = {this.state.username} />
+          {addressOrButton}
+          <WalletInfo isLoggedIn={this.state.isLoggedIn} username={this.state.username} />
         </div>
       </div>
     )

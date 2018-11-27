@@ -18,18 +18,18 @@ class CurrencyInfo extends Component {
     }
 
     componentDidUpdate() {
-        if (this.props.isLoggedIn) {
-            axios.get(`/users/${this.props.username}`)
-                .then(response => {
-                    let { address: createdAddress } = response;
-                    if(createdAddress !== null || createdAddress !== undefined){
-                        this.setState({address: createdAddress});
-                    }
-                }
-                )
-            axios.get("/users/balances", { params: { username: this.props.username } })
-            // .then(response => this.setState({balance: response}))
-        }
+        // if (this.props.isLoggedIn) {
+        //     axios.get(`/users/${this.props.username}`)
+        //         .then(response => {
+        //             let { address: createdAddress } = response;
+        //             if(createdAddress !== null || createdAddress !== undefined){
+        //                 this.setState({address: createdAddress});
+        //             }
+        //         }
+        //         )
+        //     axios.get(`/users/${this.props.username}/balances`)
+        //     // .then(response => this.setState({balance: response}))
+        // }
     }
 
     getRandomRgb = () => {
