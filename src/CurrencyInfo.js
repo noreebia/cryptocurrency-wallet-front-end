@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import axios from "axios";
 import './Currency.css';
 
 class CurrencyInfo extends Component {
@@ -17,21 +16,6 @@ class CurrencyInfo extends Component {
         this.setState({rgb: [this.getRandomRgb(), this.getRandomRgb(), this.getRandomRgb()]});
     }
 
-    componentDidUpdate() {
-        // if (this.props.isLoggedIn) {
-        //     axios.get(`/users/${this.props.username}`)
-        //         .then(response => {
-        //             let { address: createdAddress } = response;
-        //             if(createdAddress !== null || createdAddress !== undefined){
-        //                 this.setState({address: createdAddress});
-        //             }
-        //         }
-        //         )
-        //     axios.get(`/users/${this.props.username}/balances`)
-        //     // .then(response => this.setState({balance: response}))
-        // }
-    }
-
     getRandomRgb = () => {
         return Math.floor(Math.random() * (255 - 150 + 1)) + 150;
     }
@@ -43,8 +27,6 @@ class CurrencyInfo extends Component {
     }
 
     render = () => {
-
-        const addressOrButton = this.state.address !== "" ? this.state.address : <button>Create Address</button>;
         const [r,g,b] = this.state.rgb;
 
         return (
@@ -57,14 +39,6 @@ class CurrencyInfo extends Component {
                 <div >
                     <table className="currencyInfoDiv">
                         <tbody>
-                            <tr>
-                                <td style={{ textAlign: "left" }}>
-                                    Address
-                                </td>
-                                <td style={{ textAlign: "right" }}>
-                                    {addressOrButton}
-                                </td>
-                            </tr>
                             <tr>
                                 <td style={{ textAlign: "left" }}>
                                     Balance

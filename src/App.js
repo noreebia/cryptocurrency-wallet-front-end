@@ -32,10 +32,10 @@ class App extends Component {
 
   requestAddressCreation() {
     axios.post(`users/${this.state.username}/addresses`)
-      .then( (response) => {
-        let {successful, data} = response.data;
-        if(successful){
-          this.setState({userAddress: data});
+      .then((response) => {
+        let { successful, data } = response.data;
+        if (successful) {
+          this.setState({ userAddress: data });
         }
       })
       .catch(error => alert(error))

@@ -5,8 +5,8 @@ class WalletInfo extends Component {
     render() {
         return (
             <div>
-                <CurrencyInfo currencyName="Ethereum" symbol = "ETH" isLoggedIn = {this.props.isLoggedIn} username = {this.props.username}/>
-                <CurrencyInfo currencyName="KonkukCoin" symbol = "KKC" isLoggedIn = {this.props.isLoggedIn} username = {this.props.username} />
+                <CurrencyInfo currencyName="ETHEREUM" symbol="ETH" isLoggedIn={this.props.isLoggedIn} username={this.props.username} />
+                <CurrencyInfo currencyName="KONKUKCOIN" symbol="KKC" isLoggedIn={this.props.isLoggedIn} username={this.props.username} />
             </div>
         )
     }
