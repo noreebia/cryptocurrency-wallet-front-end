@@ -58,7 +58,7 @@ class App extends Component {
         console.log(data);
 
         if (successful) {
-          alert("Successfully signed up!")
+          alert("Successfully signed up! Now log in using your new account.")
         } else {
           alert(data)
         }
@@ -123,8 +123,9 @@ class App extends Component {
     }
 
     let greetingsOrLogin = this.state.isLoggedIn ?
-      <div><h2>Hello, {this.state.username}</h2>
-        <button onClick={this.handleLogOut}>Log out</button>
+      <div>
+        <h2>HELLO, {this.state.username}</h2>
+        <button onClick={this.handleLogOut}>LOG OUT</button>
       </div>
       :
       <div>
@@ -133,37 +134,38 @@ class App extends Component {
             <tr>
               <td>ID</td>
               <td>
-                <input form = "defaultForm" type="text" value={this.state.username} onChange={this.updateUsername}></input>
+                <input form="defaultForm" type="text" value={this.state.username} onChange={this.updateUsername}></input>
               </td>
             </tr>
             <tr>
               <td>PW</td>
               <td>
-                <input form = "defaultForm" type="password" value={this.state.password} onChange={this.updatePassword}></input>
+                <input form="defaultForm" type="password" value={this.state.password} onChange={this.updatePassword}></input>
               </td>
             </tr>
           </tbody>
         </table>
         <form id="defaultForm" onSubmit={this.handleLogIn}>
-          <button type = "button" style={buttonStyle} onClick={this.handleSignUp} >SIGN UP</button>
-          <button type="submit" style={buttonStyle}  >LOG IN</button>
+          <button type="button" style={buttonStyle} onClick={this.handleSignUp} >SIGN UP</button>
+          <button type="submit" style={buttonStyle} >LOG IN</button>
         </form>
       </div>
 
-    const addressOrButton = this.state.userAddress != '' ? <h3>Address: {this.state.userAddress}</h3> : <button onClick={this.requestAddressCreation}>Create Address</button>
+    const addressOrButton = this.state.userAddress != '' ? <h3>YOUR ETHEREUM ADDRESS IS <br/>{this.state.userAddress}<br/></h3> : <button onClick={this.requestAddressCreation}>Create Address</button>
 
     return (
       <div className="App">
-        <div id="bannerImage"></div>
-        <h1>CRYPTO WALLET</h1>
-        <p>Free cryptocurrency wallet - deposit and withdraw cryptocurrencies!</p>
+        <div id="bannerImage">
+          <h1 className="bannerText">CRYPTO WALLET</h1>
+          <h4 className="bannerText">DEPOSIT AND WITHDRAW CRYPTOCURRENCIES FOR FREE</h4>
+        </div>
         <div id="credentialsInputForm">
           {greetingsOrLogin}
         </div>
         <hr></hr>
         <div>
           <div id="overlay" style={overlayStyle}>
-            <h2 style={overlayTextStyle}>Please log in first</h2>
+            <h2 style={overlayTextStyle}>PLEASE LOG IN FIRST</h2>
           </div>
           {addressOrButton}
           <WalletInfo isLoggedIn={this.state.isLoggedIn} username={this.state.username} />

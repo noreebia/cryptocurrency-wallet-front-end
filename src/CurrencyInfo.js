@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
-import './Currency.css';
+import './CurrencyInfo.css';
 
 class CurrencyInfo extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            address: "",
             balance: 0,
             rgb: [255, 255, 255]
         };
@@ -41,7 +40,7 @@ class CurrencyInfo extends Component {
                         <tbody>
                             <tr>
                                 <td style={{ textAlign: "left" }}>
-                                    Balance
+                                    BALANCE
                                 </td>
                                 <td style={{ textAlign: "right" }}>
                                     {this.state.balance} {this.props.symbol}
@@ -49,14 +48,14 @@ class CurrencyInfo extends Component {
                             </tr>
                             <tr>
                                 <td>
-                                    <form>
+                                    <form id="withdrawal">
                                         <input type="text" name="destinationAddress" className="fullWidth"></input>
                                     </form>
                                 </td>
                             </tr>
                             <tr>
                                 <td>
-                                    <button className="fullWidth">Withdraw to above address</button>
+                                    <button form ="withdrawal" className="fullWidth">WITHDRAW TO ABOVE ADDRESS</button>
                                 </td>
                             </tr>
                         </tbody>
