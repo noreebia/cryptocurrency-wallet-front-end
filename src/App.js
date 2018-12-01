@@ -66,7 +66,8 @@ class App extends Component {
       .catch(error => alert(`Server is not responding.\n${error}.`))
   }
 
-  handleLogIn() {
+  handleLogIn(event) {
+    event.preventDefault();
     axios.post("/users/validation", { username: this.state.username, password: this.state.password })
       .then((response) => {
         let { successful, data } = response.data;
@@ -132,19 +133,21 @@ class App extends Component {
             <tr>
               <td>ID</td>
               <td>
-                <input type="text" value={this.state.username} onChange={this.updateUsername}></input>
+                <input form = "defaultForm" type="text" value={this.state.username} onChange={this.updateUsername}></input>
               </td>
             </tr>
             <tr>
               <td>PW</td>
               <td>
-                <input type="password" value={this.state.password} onChange={this.updatePassword}></input>
+                <input form = "defaultForm" type="password" value={this.state.password} onChange={this.updatePassword}></input>
               </td>
             </tr>
           </tbody>
         </table>
-        <button style={buttonStyle} onClick={this.handleSignUp} >SIGN UP</button>
-        <button style={buttonStyle} onClick={this.handleLogIn} >LOG IN</button>
+        <form id="defaultForm" onSubmit={this.handleLogIn}>
+          <button type = "button" style={buttonStyle} onClick={this.handleSignUp} >SIGN UP</button>
+          <button type="submit" style={buttonStyle}  >LOG IN</button>
+        </form>
       </div>
 
     const addressOrButton = this.state.userAddress != '' ? <h3>Address: {this.state.userAddress}</h3> : <button onClick={this.requestAddressCreation}>Create Address</button>
