@@ -1,18 +1,23 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import './CurrencyInfo.css';
+
+
+const mapStateToProps = (state, ownProps) => {
+    return { balance: state.balance };
+}
 
 class CurrencyInfo extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            balance: 0,
             rgb: [255, 255, 255]
         };
         this.getRandomRgb = this.getRandomRgb.bind(this);
     }
-    
-    componentDidMount(){
-        this.setState({rgb: [this.getRandomRgb(), this.getRandomRgb(), this.getRandomRgb()]});
+
+    componentDidMount() {
+        this.setState({ rgb: [this.getRandomRgb(), this.getRandomRgb(), this.getRandomRgb()] });
     }
 
     getRandomRgb = () => {
@@ -26,12 +31,12 @@ class CurrencyInfo extends Component {
     }
 
     render = () => {
-        const [r,g,b] = this.state.rgb;
+        const [r, g, b] = this.state.rgb;
 
         return (
             <div className="currencyDisplayDiv">
                 <div >
-                    <div className="currencyNameDiv" style= { {backgroundColor: `rgb(${r}, ${g}, ${b})`}}>
+                    <div className="currencyNameDiv" style={{ backgroundColor: `rgb(${r}, ${g}, ${b})` }}>
                         <h1 >{this.props.currencyName}</h1>
                     </div>
                 </div>
@@ -55,7 +60,7 @@ class CurrencyInfo extends Component {
                             </tr>
                             <tr>
                                 <td>
-                                    <button form ="withdrawal" className="fullWidth">WITHDRAW TO ABOVE ADDRESS</button>
+                                    <button form="withdrawal" className="fullWidth">WITHDRAW TO ABOVE ADDRESS</button>
                                 </td>
                             </tr>
                         </tbody>
@@ -66,4 +71,4 @@ class CurrencyInfo extends Component {
     }
 }
 
-export default CurrencyInfo;
+export default connect(mapStateToProps) (CurrencyInfo);

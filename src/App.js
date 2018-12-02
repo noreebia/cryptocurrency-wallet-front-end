@@ -3,17 +3,34 @@ import './Fieldset';
 import React, { Component } from 'react';
 import axios from 'axios';
 import WalletInfo from "./WalletInfo";
+import { connect } from 'react-redux';
+import { setLoginStatus, setUsername, setPassword, setEthAddressOfUser } from './actions/actions';
 
+const mapStateToProps = (state) => {
+  return {
+    isLoggedIn: state.reducer.isLoggedIn,
+    username: state.reducer.username,
+    ethAddressOfUser: state.reducer.ethAddressOfUser
+  }
+}
+
+const mapDispatchToProps = dispatch => {
+  return {
+    logIn: () => dispatch(setLoginStatus(true)),
+    logOut: () => dispatch(setLoginStatus(false)),
+    setUsername: username => dispatch(setUsername(username)),
+    setPassword: password => dispatch(setPassword(password)),
+    setEthAddressOfUser: ethAddress => dispatch(setEthAddressOfUser(ethAddress))
+  }
+}
 
 class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
       tableWidth: 0,
-      isLoggedIn: false,
-      username: '',
-      password: '',
-      userAddress: ''
+      usernameTextField: '',
+      passwordTextField: '',
     };
     this.tableRef = React.createRef();
     this.updateUsername = this.updateUsername.bind(this);
@@ -31,11 +48,16 @@ class App extends Component {
   }
 
   requestAddressCreation() {
-    axios.post(`users/${this.state.username}/addresses`)
+    console.log("woohoo!");
+    axios.post(`/users/${this.props.username}/addresses`)
       .then((response) => {
+        console.log(response);
         let { successful, data } = response.data;
         if (successful) {
-          this.setState({ userAddress: data });
+          // this.setState({ userAddress: data });
+          this.props.setEthAddressOfUser(data);
+        } else {
+          alert(`${data}`)
         }
       })
       .catch(error => alert(error))
@@ -43,15 +65,15 @@ class App extends Component {
 
   updateUsername(event) {
     console.log(event.target.value);
-    this.setState({ username: event.target.value });
+    this.setState({ usernameTextField: event.target.value });
   }
 
   updatePassword(event) {
-    this.setState({ password: event.target.value });
+    this.setState({ passwordTextField: event.target.value });
   }
 
   handleSignUp() {
-    axios.post("/users", { username: this.state.username, password: this.state.password })
+    axios.post("/users", { username: this.state.usernameTextField, password: this.state.passwordTextField })
       .then((response) => {
         let { successful, data } = response.data;
         console.log(response);
@@ -68,24 +90,28 @@ class App extends Component {
 
   handleLogIn(event) {
     event.preventDefault();
-    axios.post("/users/validation", { username: this.state.username, password: this.state.password })
+    axios.post("/users/validation", { username: this.state.usernameTextField, password: this.state.passwordTextField })
       .then((response) => {
         let { successful, data } = response.data;
         console.log(successful);
         if (successful) {
-          this.setState({ isLoggedIn: true });
+          // this.setState({ isLoggedIn: true });
+          this.props.logIn();
+          this.props.setUsername(this.state.usernameTextField);
+          this.props.setPassword(this.state.passwordTextField);
         } else {
           alert(data);
         }
       })
       .then(() => {
-        if (this.state.isLoggedIn) {
-          axios.get(`/users/${this.state.username}/addresses`)
+        if (this.props.isLoggedIn) {
+          axios.get(`/users/${this.props.username}/addresses`)
             .then((response) => {
               console.log(response);
               let { successful, data } = response.data;
               if (successful) {
-                this.setState({ userAddress: data });
+                // this.setState({ userAddress: data });
+                this.props.setEthAddressOfUser(data);
               }
             })
             .catch(error => alert(error))
@@ -95,7 +121,8 @@ class App extends Component {
   }
 
   handleLogOut() {
-    this.setState({ isLoggedIn: false, username: "", passowrd: "", userAddress: "" });
+    // this.setState({ isLoggedIn: false, username: "", passowrd: "", userAddress: "" });
+    this.props.logOut();
   }
 
   render() {
@@ -111,7 +138,7 @@ class App extends Component {
       height: '100%',
       backgroundColor: 'rgba(255,255,255, 0.9)',
       zIndex: 2,
-      display: this.state.isLoggedIn ? 'none' : 'block',
+      display: this.props.isLoggedIn ? 'none' : 'block',
       textAlign: 'center',
     }
 
@@ -122,9 +149,9 @@ class App extends Component {
       flexDirection: 'row'
     }
 
-    let greetingsOrLogin = this.state.isLoggedIn ?
+    let greetingsOrLogin = this.props.isLoggedIn ?
       <div>
-        <h2>HELLO, {this.state.username}</h2>
+        <h2>HELLO, {this.props.username}</h2>
         <button onClick={this.handleLogOut}>LOG OUT</button>
       </div>
       :
@@ -134,13 +161,13 @@ class App extends Component {
             <tr>
               <td>ID</td>
               <td>
-                <input form="defaultForm" type="text" value={this.state.username} onChange={this.updateUsername}></input>
+                <input form="defaultForm" type="text" value={this.state.usernameTextField} onChange={this.updateUsername}></input>
               </td>
             </tr>
             <tr>
               <td>PW</td>
               <td>
-                <input form="defaultForm" type="password" value={this.state.password} onChange={this.updatePassword}></input>
+                <input form="defaultForm" type="password" value={this.state.passwordTextField} onChange={this.updatePassword}></input>
               </td>
             </tr>
           </tbody>
@@ -151,7 +178,7 @@ class App extends Component {
         </form>
       </div>
 
-    const addressOrButton = this.state.userAddress != '' ? <h3>YOUR ETHEREUM ADDRESS IS <br/>{this.state.userAddress}<br/></h3> : <button onClick={this.requestAddressCreation}>Create Address</button>
+    const addressOrButton = this.props.ethAddressOfUser != "" ? <h3>YOUR ETHEREUM ADDRESS IS <br />{this.props.ethAddressOfUser}<br /></h3> : <button onClick={this.requestAddressCreation}>Create Address</button>
 
     return (
       <div className="App">
@@ -168,11 +195,11 @@ class App extends Component {
             <h2 style={overlayTextStyle}>PLEASE LOG IN FIRST</h2>
           </div>
           {addressOrButton}
-          <WalletInfo isLoggedIn={this.state.isLoggedIn} username={this.state.username} />
+          <WalletInfo isLoggedIn={this.props.isLoggedIn} username={this.props.username} />
         </div>
       </div>
     )
   }
 }
 
-export default App;
+export default connect(mapStateToProps, mapDispatchToProps)(App);
