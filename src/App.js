@@ -37,7 +37,6 @@ class App extends Component {
     this.updatePassword = this.updatePassword.bind(this);
     this.handleSignUp = this.handleSignUp.bind(this);
     this.handleLogIn = this.handleLogIn.bind(this);
-    this.handleLogOut = this.handleLogOut.bind(this);
     this.requestAddressCreation = this.requestAddressCreation.bind(this);
   }
 
@@ -54,7 +53,6 @@ class App extends Component {
         console.log(response);
         let { successful, data } = response.data;
         if (successful) {
-          // this.setState({ userAddress: data });
           this.props.setEthAddressOfUser(data);
         } else {
           alert(`${data}`)
@@ -95,7 +93,6 @@ class App extends Component {
         let { successful, data } = response.data;
         console.log(successful);
         if (successful) {
-          // this.setState({ isLoggedIn: true });
           this.props.logIn({ isLoggedIn: true, username: this.state.usernameTextField, password: this.state.passwordTextField});
         } else {
           alert(data);
@@ -108,7 +105,6 @@ class App extends Component {
               console.log(response);
               let { successful, data } = response.data;
               if (successful) {
-                // this.setState({ userAddress: data });
                 this.props.setEthAddressOfUser(data);
               }
             })
@@ -116,11 +112,6 @@ class App extends Component {
         }
       })
       .catch(error => alert(`Server is not responding.\n${error}.`))
-  }
-
-  handleLogOut() {
-    // this.setState({ isLoggedIn: false, username: "", passowrd: "", userAddress: "" });
-    this.props.logOut();
   }
 
   render() {
@@ -149,8 +140,8 @@ class App extends Component {
 
     let greetingsOrLogin = this.props.isLoggedIn ?
       <div>
-        <h2>HELLO, {this.props.username}</h2>
-        <button onClick={this.handleLogOut}>LOG OUT</button>
+        <h2>HELLO, {this.props.username.toUpperCase()}</h2>
+        <button onClick={this.props.logOut}>LOG OUT</button>
       </div>
       :
       <div>
@@ -176,7 +167,7 @@ class App extends Component {
         </form>
       </div>
 
-    const addressOrButton = this.props.ethAddressOfUser != "" ? <h3>YOUR ETHEREUM ADDRESS IS <br />{this.props.ethAddressOfUser}<br /></h3> : <button onClick={this.requestAddressCreation}>Create Address</button>
+    const addressOrButton = this.props.ethAddressOfUser != "" ? <h3>YOUR ETHEREUM ADDRESS IS <br />{this.props.ethAddressOfUser.toUpperCase()}<br /></h3> : <button onClick={this.requestAddressCreation}>Create Address</button>
 
     return (
       <div className="App">
