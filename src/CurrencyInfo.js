@@ -4,7 +4,7 @@ import './CurrencyInfo.css';
 
 
 const mapStateToProps = (state, ownProps) => {
-    return { balance: state.balance };
+    return { balance: state.reducer.balance };
 }
 
 class CurrencyInfo extends Component {
@@ -48,7 +48,7 @@ class CurrencyInfo extends Component {
                                     BALANCE
                                 </td>
                                 <td style={{ textAlign: "right" }}>
-                                    {this.state.balance} {this.props.symbol}
+                                    {this.props.balance} {this.props.symbol}
                                 </td>
                             </tr>
                             <tr>

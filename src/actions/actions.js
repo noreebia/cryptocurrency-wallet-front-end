@@ -1,8 +1,8 @@
 import { CHANGE_LOGIN_STATUS, SET_USERNAME, SET_PASSWORD, SET_ETHEREUM_ADDRESS, UPDATE_BALANCE } from "./types";
 
-export const setLoginStatus = status => ({
+export const setLoginStatus = (details) => ({
     type: CHANGE_LOGIN_STATUS,
-    payload: status
+    payload: details
 })
 
 export const setUsername = username => ({

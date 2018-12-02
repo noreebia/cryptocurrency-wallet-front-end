@@ -11,7 +11,7 @@ const initialState = {
 export default (state = initialState, action) => {
     switch (action.type) {
         case CHANGE_LOGIN_STATUS:
-            if (!action.payload) {
+            if (!action.payload.isLoggedIn) {
                 return Object.assign({}, {
                     isLoggedIn: false,
                     username: "",
@@ -20,7 +20,8 @@ export default (state = initialState, action) => {
                     balance: 0
                 })
             } else {
-                return Object.assign({}, state, { isLoggedIn: action.payload })
+                const {payload} = action;
+                return Object.assign({}, state, payload)
             }
         case SET_USERNAME:
             return Object.assign({}, state, { username: action.payload })

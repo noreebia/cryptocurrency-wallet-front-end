@@ -16,8 +16,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    logIn: () => dispatch(setLoginStatus(true)),
-    logOut: () => dispatch(setLoginStatus(false)),
+    logIn: (details) => dispatch(setLoginStatus(details)),
+    logOut: () => dispatch(setLoginStatus({ isLoggedIn: false})),
     setUsername: username => dispatch(setUsername(username)),
     setPassword: password => dispatch(setPassword(password)),
     setEthAddressOfUser: ethAddress => dispatch(setEthAddressOfUser(ethAddress))
@@ -96,9 +96,7 @@ class App extends Component {
         console.log(successful);
         if (successful) {
           // this.setState({ isLoggedIn: true });
-          this.props.logIn();
-          this.props.setUsername(this.state.usernameTextField);
-          this.props.setPassword(this.state.passwordTextField);
+          this.props.logIn({ isLoggedIn: true, username: this.state.usernameTextField, password: this.state.passwordTextField});
         } else {
           alert(data);
         }
