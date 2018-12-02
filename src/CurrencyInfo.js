@@ -1,11 +1,5 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
 import './CurrencyInfo.css';
-
-
-const mapStateToProps = (state, ownProps) => {
-    return { balance: state.reducer.balance };
-}
 
 class CurrencyInfo extends Component {
     constructor(props) {
@@ -37,7 +31,7 @@ class CurrencyInfo extends Component {
             <div className="currencyDisplayDiv">
                 <div >
                     <div className="currencyNameDiv" style={{ backgroundColor: `rgb(${r}, ${g}, ${b})` }}>
-                        <h1 >{this.props.currencyName}</h1>
+                        <h1 >{this.props.name.toUpperCase()}</h1>
                     </div>
                 </div>
                 <div >
@@ -45,15 +39,15 @@ class CurrencyInfo extends Component {
                         <tbody>
                             <tr>
                                 <td style={{ textAlign: "left" }}>
-                                    BALANCE
+                                    BALANCE:
                                 </td>
                                 <td style={{ textAlign: "right" }}>
-                                    {this.props.balance} {this.props.symbol}
+                                    {this.props.balance} {this.props.symbol.toUpperCase()}
                                 </td>
                             </tr>
                             <tr>
                                 <td>
-                                    <form id="withdrawal">
+                                    <form className="withdrawal">
                                         <input type="text" name="destinationAddress" className="fullWidth"></input>
                                     </form>
                                 </td>
@@ -71,4 +65,4 @@ class CurrencyInfo extends Component {
     }
 }
 
-export default connect(mapStateToProps) (CurrencyInfo);
+export default CurrencyInfo;
