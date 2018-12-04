@@ -1,5 +1,4 @@
-import { CHANGE_LOGIN_STATUS, SET_USERNAME, SET_PASSWORD, SET_ETHEREUM_ADDRESS, UPDATE_BALANCE } from "../actions/types";
-import Currency from "../classes/currency";
+import { CHANGE_LOGIN_STATUS, SET_USERNAME, SET_PASSWORD, SET_ETHEREUM_ADDRESS } from "../actions/types";
 
 
 const initialState = {
@@ -7,7 +6,6 @@ const initialState = {
     username: "",
     password: "",
     ethAddressOfUser: "",
-    activeCurrencies: [new Currency("Ethereum", "eth", 0), new Currency("KonkukCoin", "kkc", 0) ]
 }
 
 export default (state = initialState, action) => {
@@ -25,8 +23,6 @@ export default (state = initialState, action) => {
             return Object.assign({}, state, { password: action.payload })
         case SET_ETHEREUM_ADDRESS:
             return Object.assign({}, state, { ethAddressOfUser: action.payload })
-        case UPDATE_BALANCE:
-            return Object.assign({}, state, { balance: action.payload })
         default:
             return state
     }

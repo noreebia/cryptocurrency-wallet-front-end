@@ -4,23 +4,26 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import WalletInfo from "./WalletInfo";
 import { connect } from 'react-redux';
-import { setLoginStatus, setUsername, setPassword, setEthAddressOfUser } from './actions/actions';
+import { setLoginStatus, setUsername, setPassword, setEthAddressOfUser, addBalance, refreshBalance, emptyBalance } from './actions/actions';
 
 const mapStateToProps = (state) => {
   return {
     isLoggedIn: state.reducer.isLoggedIn,
     username: state.reducer.username,
-    ethAddressOfUser: state.reducer.ethAddressOfUser
+    ethAddressOfUser: state.reducer.ethAddressOfUser,
   }
 }
 
 const mapDispatchToProps = dispatch => {
   return {
     logIn: (details) => dispatch(setLoginStatus(details)),
-    logOut: () => dispatch(setLoginStatus({ isLoggedIn: false})),
+    logOut: () => dispatch(setLoginStatus({ isLoggedIn: false })),
     setUsername: username => dispatch(setUsername(username)),
     setPassword: password => dispatch(setPassword(password)),
-    setEthAddressOfUser: ethAddress => dispatch(setEthAddressOfUser(ethAddress))
+    setEthAddressOfUser: ethAddress => dispatch(setEthAddressOfUser(ethAddress)),
+    addBalance: balance => dispatch(addBalance(balance)),
+    refreshBalance: () => dispatch(refreshBalance()),
+    emptyBalance: () => dispatch(emptyBalance())
   }
 }
 
@@ -38,6 +41,7 @@ class App extends Component {
     this.handleSignUp = this.handleSignUp.bind(this);
     this.handleLogIn = this.handleLogIn.bind(this);
     this.requestAddressCreation = this.requestAddressCreation.bind(this);
+    this.handleLogOut = this.handleLogOut.bind(this);
   }
 
   componentDidMount() {
@@ -89,29 +93,51 @@ class App extends Component {
   handleLogIn(event) {
     event.preventDefault();
     axios.post("/users/validation", { username: this.state.usernameTextField, password: this.state.passwordTextField })
-      .then((response) => {
+      .then(response => {
         let { successful, data } = response.data;
         console.log(successful);
         if (successful) {
-          this.props.logIn({ isLoggedIn: true, username: this.state.usernameTextField, password: this.state.passwordTextField});
+          this.props.logIn({ isLoggedIn: true, username: this.state.usernameTextField, password: this.state.passwordTextField });
         } else {
           alert(data);
         }
       })
       .then(() => {
         if (this.props.isLoggedIn) {
+
           axios.get(`/users/${this.props.username}/addresses`)
-            .then((response) => {
-              console.log(response);
-              let { successful, data } = response.data;
+            .then(responseToAddressQuery => {
+              console.log(responseToAddressQuery);
+              const { successful, data } = responseToAddressQuery.data;
               if (successful) {
+                console.log("data: " + data);
                 this.props.setEthAddressOfUser(data);
+
+                axios.get(`/users/${this.props.username}/balances`)
+                  .then(responseToBalanceQuery => {
+                    console.log("adding balance!" + JSON.stringify(responseToBalanceQuery));
+                    let { successful, data } = responseToBalanceQuery.data;
+                    if (successful) {
+                      console.log(data);
+                      this.props.emptyBalance();
+                      data.map((balance) => {
+                        console.log("adding!");
+                        this.props.addBalance(balance);
+                      })
+                    }
+                  })
+                  .catch(error => alert(error))
               }
             })
             .catch(error => alert(error))
         }
       })
       .catch(error => alert(`Server is not responding.\n${error}.`))
+  }
+
+  handleLogOut() {
+    this.props.logOut();
+    this.props.refreshBalance();
   }
 
   render() {
@@ -141,7 +167,7 @@ class App extends Component {
     let greetingsOrLogin = this.props.isLoggedIn ?
       <div>
         <h2>HELLO, {this.props.username.toUpperCase()}</h2>
-        <button onClick={this.props.logOut}>LOG OUT</button>
+        <button onClick={this.handleLogOut}>LOG OUT</button>
       </div>
       :
       <div>

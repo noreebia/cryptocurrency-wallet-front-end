@@ -5,9 +5,16 @@ class CurrencyInfo extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            inputField: '',
             rgb: [255, 255, 255]
         };
         this.getRandomRgb = this.getRandomRgb.bind(this);
+        this.updateInputField = this.updateInputField.bind(this);
+    }
+
+    updateInputField(event) {
+        console.log(event.target.value);
+        this.setState({ inputField: event.target.value });
     }
 
     componentDidMount() {
@@ -48,13 +55,13 @@ class CurrencyInfo extends Component {
                             <tr>
                                 <td>
                                     <form className="withdrawal">
-                                        <input type="text" name="destinationAddress" className="fullWidth"></input>
+                                        <input type="text" name="destinationAddress" className="fullWidth" value={this.state.inputField} onChange={this.updateInputField}></input>
                                     </form>
                                 </td>
                             </tr>
                             <tr>
                                 <td>
-                                    <button form="withdrawal" className="fullWidth">WITHDRAW TO ABOVE ADDRESS</button>
+                                    <button form="withdrawal" className="fullWidth" onClick={this.props.sendTransaction}>WITHDRAW TO ABOVE ADDRESS</button>
                                 </td>
                             </tr>
                         </tbody>
