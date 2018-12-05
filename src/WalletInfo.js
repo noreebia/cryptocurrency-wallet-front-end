@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 
 const mapStateToProps = (state) => {
     return {
-        balances: state.balanceReducer.balances
+        balances: state.balanceReducer
     }
 }
 
