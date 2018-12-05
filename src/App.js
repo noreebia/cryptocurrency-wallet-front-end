@@ -4,7 +4,7 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import WalletInfo from "./WalletInfo";
 import { connect } from 'react-redux';
-import { setLoginStatus, setUsername, setPassword, setEthAddressOfUser, addBalance, refreshBalance, emptyBalance } from './actions/actions';
+import { setLoginStatus, setUsername, setPassword, setEthAddressOfUser, setBalances, refreshBalance } from './actions/actions';
 
 const mapStateToProps = (state) => {
   return {
@@ -21,9 +21,8 @@ const mapDispatchToProps = dispatch => {
     setUsername: username => dispatch(setUsername(username)),
     setPassword: password => dispatch(setPassword(password)),
     setEthAddressOfUser: ethAddress => dispatch(setEthAddressOfUser(ethAddress)),
-    addBalance: balance => dispatch(addBalance(balance)),
     refreshBalance: () => dispatch(refreshBalance()),
-    emptyBalance: () => dispatch(emptyBalance())
+    setBalances: (balances) => dispatch(setBalances(balances))
   }
 }
 
@@ -119,11 +118,12 @@ class App extends Component {
                     let { successful, data } = responseToBalanceQuery.data;
                     if (successful) {
                       console.log(data);
-                      this.props.emptyBalance();
-                      data.map((balance) => {
-                        console.log("adding!");
-                        this.props.addBalance(balance);
-                      })
+                      this.props.setBalances(data)
+                      // this.props.emptyBalance();
+                      // data.map((balance) => {
+                      //   console.log("adding!");
+                      //   this.props.addBalance(balance);
+                      // })
                     }
                   })
                   .catch(error => alert(error))

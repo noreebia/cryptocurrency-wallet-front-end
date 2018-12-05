@@ -1,4 +1,4 @@
-import { CHANGE_LOGIN_STATUS, SET_USERNAME, SET_PASSWORD, SET_ETHEREUM_ADDRESS, UPDATE_BALANCE, ADD_BALANCE, REFRESH_BALANCE, EMPTY_BALANCE } from "./types";
+import { CHANGE_LOGIN_STATUS, SET_USERNAME, SET_PASSWORD, SET_ETHEREUM_ADDRESS, UPDATE_BALANCE, REFRESH_BALANCE, SET_BALANCES } from "./types";
 
 export const setLoginStatus = (details) => ({
     type: CHANGE_LOGIN_STATUS,
@@ -25,15 +25,11 @@ export const updateBalance = balance => ({
     payload: balance
 })
 
-export const addBalance = balance => ({
-        type: ADD_BALANCE,
-        payload: balance
+export const setBalances = balances => ({
+        type: SET_BALANCES,
+        payload: balances
 })
 
 export const refreshBalance = () => ({
     type: REFRESH_BALANCE,
-})
-
-export const emptyBalance = () => ({
-    type: EMPTY_BALANCE,
 })

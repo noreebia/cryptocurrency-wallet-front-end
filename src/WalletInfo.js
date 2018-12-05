@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import CurrencyInfo from "./CurrencyInfo";
 import { connect } from 'react-redux';
-import axios from 'axios';
 
 const mapStateToProps = (state) => {
     return {

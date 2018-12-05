@@ -1,4 +1,4 @@
-import { ADD_BALANCE, REFRESH_BALANCE, EMPTY_BALANCE } from "../actions/types";
+import { SET_BALANCES, REFRESH_BALANCE } from "../actions/types";
 
 const initialState = {
     balances: [{
@@ -15,12 +15,10 @@ const initialState = {
 
 export default (state = initialState, action) => {
     switch (action.type) {
-        case ADD_BALANCE:
-            return Object.assign({}, state, { balances: state.balances.concat(action.payload) })
+        case SET_BALANCES:
+            return Object.assign({}, state, { balances: [...action.payload] })
         case REFRESH_BALANCE:
             return initialState;
-        case EMPTY_BALANCE:
-            return { balances: [] }
         default:
             return state
     }
