@@ -32,7 +32,7 @@ class WalletInfo extends Component {
         console.log(msg);
         const { username, transactionHash } = msg;
         if (username == this.props.username) {
-            this.props.addTransaction("Deposit", transactionHash );
+            this.props.addTransaction("DEPOSIT", transactionHash );
             axios.get(`/users/${this.props.username}/balances`)
                 .then(response => {
                     console.log("adding balance!" + JSON.stringify(response));

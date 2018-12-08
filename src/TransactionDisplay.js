@@ -1,24 +1,18 @@
 import React, { Component } from 'react';
+import Transaction from "./Transaction";
 
 class TransactionDisplay extends Component {
 
     render() {
 
-        const rows = this.props.transactions.map(transaction => {
-            const etherscanLink = `https://rinkeby.etherscan.io/tx/${transaction.hash}`;
+        const rows = this.props.transactions.map((transaction, index) => {
             return (
-                <tr>
-                    <td>
-                        {transaction.type}
-                    </td>
-                    <td>
-                        <a href={etherscanLink}>{transaction.hash}</a>
-                    </td>
-                </tr>
+                <Transaction key={index} type={transaction.type} hash={transaction.hash} />
             );
         })
 
-        const TransactionDisplayPanel = <table>
+        const TransactionDisplayPanel = 
+        <table>
             <tbody>
                 <tr>
                     <th>Type</th>
