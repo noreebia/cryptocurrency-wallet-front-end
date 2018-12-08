@@ -18,18 +18,20 @@ class TransactionDisplay extends Component {
             );
         })
 
+        const TransactionDisplayPanel = <table>
+            <tbody>
+                <tr>
+                    <th>Type</th>
+                    <th>Hash</th>
+                </tr>
+                {rows}
+            </tbody>
+        </table>
+
         return (
             <div>
-                {this.props.transactions.length > 0 && <h1>TRANSACTIONS</h1>}
-                <table>
-                    <tbody>
-                        <tr>
-                            <th>Type</th>
-                            <th>Hash</th>
-                        </tr>
-                        {rows}
-                    </tbody>
-                </table>
+                <h1>TRANSACTIONS</h1>
+                {this.props.transactions.length > 0 ? TransactionDisplayPanel : <p>DEPOSIT OR WITHDRAW TO VIEW YOUR TRANSACTIONS</p>}
             </div>
         )
     }

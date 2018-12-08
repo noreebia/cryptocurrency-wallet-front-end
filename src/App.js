@@ -4,7 +4,7 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import WalletInfo from "./WalletInfo";
 import { connect } from 'react-redux';
-import { setLoginStatus, setUsername, setPassword, setEthAddressOfUser, updateBalances, resetBalances } from './actions/actions';
+import { setLoginStatus, setUsername, setPassword, setEthAddressOfUser, updateBalances, resetBalances, resetTransactions } from './actions/actions';
 
 const mapStateToProps = (state) => {
   return {
@@ -22,7 +22,8 @@ const mapDispatchToProps = dispatch => {
     setPassword: password => dispatch(setPassword(password)),
     setEthAddressOfUser: ethAddress => dispatch(setEthAddressOfUser(ethAddress)),
     resetBalances: () => dispatch(resetBalances()),
-    updateBalances: (balances) => dispatch(updateBalances(balances))
+    updateBalances: (balances) => dispatch(updateBalances(balances)),
+    resetTransactions: () => dispatch(resetTransactions())
   }
 }
 
@@ -133,6 +134,7 @@ class App extends Component {
   handleLogOut() {
     this.props.logOut();
     this.props.resetBalances();
+    this.props.resetTransactions();
   }
 
   render() {
