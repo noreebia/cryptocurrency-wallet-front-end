@@ -4,12 +4,14 @@ import { connect } from 'react-redux';
 import SockJsClient from 'react-stomp';
 import axios from 'axios';
 import { updateBalances, addTransaction } from './actions/actions';
+import TransactionDisplay from "./TransactionDisplay";
 
 const mapStateToProps = (state) => {
     return {
         isLoggedIn: state.reducer.isLoggedIn,
         username: state.reducer.username,
-        balances: state.balanceReducer
+        balances: state.balanceReducer,
+        transactions: state.transactionReducer
     }
 }
 
@@ -52,6 +54,7 @@ class WalletInfo extends Component {
                 {this.props.isLoggedIn && <SockJsClient url='http://localhost:8080/websocket' topics={['/topic/deposits']} onConnect={() => { console.log("connected to server!") }} onMessage={this.receiveDepositNotification}
                     onDisconnect={() => { console.log("disconnected!"); }} ref={(client) => { this.clientRef = client }} />}
                 {listOfCurrencies}
+                <TransactionDisplay transactions = {this.props.transactions} />
             </div>
         )
     }
