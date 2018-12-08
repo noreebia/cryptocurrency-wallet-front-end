@@ -4,7 +4,7 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import WalletInfo from "./WalletInfo";
 import { connect } from 'react-redux';
-import { setLoginStatus, setUsername, setPassword, setEthAddressOfUser, setBalances, refreshBalance } from './actions/actions';
+import { setLoginStatus, setUsername, setPassword, setEthAddressOfUser, updateBalances, resetBalances } from './actions/actions';
 
 const mapStateToProps = (state) => {
   return {
@@ -21,8 +21,8 @@ const mapDispatchToProps = dispatch => {
     setUsername: username => dispatch(setUsername(username)),
     setPassword: password => dispatch(setPassword(password)),
     setEthAddressOfUser: ethAddress => dispatch(setEthAddressOfUser(ethAddress)),
-    refreshBalance: () => dispatch(refreshBalance()),
-    setBalances: (balances) => dispatch(setBalances(balances))
+    resetBalances: () => dispatch(resetBalances()),
+    updateBalances: (balances) => dispatch(updateBalances(balances))
   }
 }
 
@@ -118,12 +118,7 @@ class App extends Component {
                     let { successful, data } = responseToBalanceQuery.data;
                     if (successful) {
                       console.log(data);
-                      this.props.setBalances(data)
-                      // this.props.emptyBalance();
-                      // data.map((balance) => {
-                      //   console.log("adding!");
-                      //   this.props.addBalance(balance);
-                      // })
+                      this.props.updateBalances(data)
                     }
                   })
                   .catch(error => alert(error))
@@ -137,7 +132,7 @@ class App extends Component {
 
   handleLogOut() {
     this.props.logOut();
-    this.props.refreshBalance();
+    this.props.resetBalances();
   }
 
   render() {

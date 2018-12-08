@@ -1,4 +1,4 @@
-import { CHANGE_LOGIN_STATUS, SET_USERNAME, SET_PASSWORD, SET_ETHEREUM_ADDRESS, UPDATE_BALANCE, REFRESH_BALANCE, SET_BALANCES } from "./types";
+import { CHANGE_LOGIN_STATUS, SET_USERNAME, SET_PASSWORD, SET_ETHEREUM_ADDRESS, UPDATE_BALANCES, RESET_BALANCES, ADD_TRANSACTION, RESET_TRANSACTIONS, SET_PEERS, RESET_PEERS} from "./types";
 
 export const setLoginStatus = (details) => ({
     type: CHANGE_LOGIN_STATUS,
@@ -20,16 +20,21 @@ export const setEthAddressOfUser = address => ({
     payload: address
 })
 
-export const updateBalance = balance => ({
-    type: UPDATE_BALANCE,
-    payload: balance
+export const updateBalances = balances => ({
+    type: UPDATE_BALANCES,
+    payload: balances
 })
 
-export const setBalances = balances => ({
-        type: SET_BALANCES,
-        payload: balances
+export const resetBalances = () => ({
+    type: RESET_BALANCES,
 })
 
-export const refreshBalance = () => ({
-    type: REFRESH_BALANCE,
+export const addTransaction = (transactionType, transaction) => ({
+    type: ADD_TRANSACTION,
+    transactionType: transactionType,
+    payload: transaction,
+})
+
+export const resetTransactions = () => ({
+    type: RESET_TRANSACTIONS,
 })

@@ -1,4 +1,4 @@
-import { SET_BALANCES, REFRESH_BALANCE } from "../actions/types";
+import { RESET_BALANCES, UPDATE_BALANCES} from "../actions/types";
 
 const initialState = [{
     "currencyName": "ethereum",
@@ -13,9 +13,9 @@ const initialState = [{
 
 export default (state = initialState, action) => {
     switch (action.type) {
-        case SET_BALANCES:
+        case UPDATE_BALANCES:
             return [...action.payload]
-        case REFRESH_BALANCE:
+        case RESET_BALANCES:
             return initialState
         default:
             return state
