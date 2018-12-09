@@ -12,6 +12,7 @@ class CurrencyInfo extends Component {
         this.getRandomRgb = this.getRandomRgb.bind(this);
         this.updateAddressField = this.updateAddressField.bind(this);
         this.updateAmountField = this.updateAmountField.bind(this);
+        this.onWithdrawalButtonClick = this.onWithdrawalButtonClick.bind(this);
     }
 
     updateAddressField(event) {
@@ -36,6 +37,10 @@ class CurrencyInfo extends Component {
         return {
             backgroundColor: 'rgb(' + this.getRandomRgb() + ',' + this.getRandomRgb() + ',' + this.getRandomRgb() + ')'
         };
+    }
+
+    onWithdrawalButtonClick(){
+        this.props.withdraw(this.props.symbol, this.state.addressField, this.state.amountField);
     }
 
     render = () => {
@@ -71,7 +76,7 @@ class CurrencyInfo extends Component {
                             </tr>
                             <tr>
                                 <td>
-                                    <button form="withdrawal" className="fullWidth" onClick={this.props.sendTransaction} >WITHDRAW TO ABOVE ADDRESS</button>
+                                    <button form="withdrawal" className="fullWidth" onClick={this.onWithdrawalButtonClick} >WITHDRAW TO ABOVE ADDRESS</button>
                                 </td>
                             </tr>
                         </tbody>

@@ -1,6 +1,5 @@
 import { CHANGE_LOGIN_STATUS, SET_USERNAME, SET_PASSWORD, SET_ETHEREUM_ADDRESS } from "../actions/types";
 
-
 const initialState = {
     isLoggedIn: false,
     username: "",
