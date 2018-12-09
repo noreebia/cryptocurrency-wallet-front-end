@@ -20,7 +20,7 @@ class CurrencyInfo extends Component {
         this.setState({ addressField: event.target.value });
     }
 
-    updateAmountField(event){
+    updateAmountField(event) {
         console.log(event.target.value);
         this.setState({ amountField: event.target.value });
     }
@@ -39,8 +39,11 @@ class CurrencyInfo extends Component {
         };
     }
 
-    onWithdrawalButtonClick(){
+    onWithdrawalButtonClick() {
         this.props.withdraw(this.props.symbol, this.state.addressField, this.state.amountField);
+        this.setState({
+            addressField: "", amountField: "",
+        });
     }
 
     render = () => {

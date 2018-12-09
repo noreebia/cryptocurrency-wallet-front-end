@@ -3,7 +3,7 @@ import { RESET_TRANSACTIONS, ADD_TRANSACTION} from "../actions/types";
 export default (state = [], action) => {
     switch (action.type) {
         case ADD_TRANSACTION:
-            return [...state, { type: action.transactionType, hash: action.payload }]
+            return [{ type: action.transactionType, hash: action.payload }, ...state]
         case RESET_TRANSACTIONS:
             return []
         default:

@@ -27,6 +27,7 @@ class WalletInfo extends Component {
         super(props);
         this.receiveDepositNotification = this.receiveDepositNotification.bind(this);
         this.requestWithdrawal = this.requestWithdrawal.bind(this);
+        this.requestBalance = this.requestBalance.bind(this);
     }
 
     receiveDepositNotification(msg) {
@@ -48,50 +49,35 @@ class WalletInfo extends Component {
         }
     }
 
+    requestBalance() {
+        console.log(`requesting balance!`);
+        axios.get(`/users/${this.props.username}/balances`)
+        .then((response) => {
+            const { successful, data } = response.data;
+            if (successful) {
+                this.props.updateBalances(data);
+            }
+        })
+        .catch(err => console.log(err))
+    }
+
     async requestWithdrawal(symbol, destinationAddress, amount) {
         console.log(symbol, destinationAddress, amount);
-
         let transactionResponse;
-        try{
+        try {
             transactionResponse = await axios.post(`/users/transactions`, { username: this.props.username, currencySymbol: symbol, destinationAddress: destinationAddress.trim(), amount: amount });
-        } catch(err){
+        } catch (err) {
             alert(`Withdrawal failed! ${err}`);
             return;
         }
         const { successful, data } = transactionResponse.data;
         if (successful) {
-            alert(`Successfully withdrew ${symbol}`);
             this.props.addTransaction("WITHDRAWAL", data);
-            let balanceQuery;
-            try{
-                balanceQuery = await axios.get(`/users/${this.props.username}/balances`);
-                const { successful, data } = balanceQuery.data;
-                if (successful) {
-                    this.props.updateBalances(data);
-                }
-            } catch(err){
-                alert(`Withdrawal failed but`)
-            }
+            alert(`Successfully withdrew ${symbol}`);
+            setTimeout(this.requestBalance, 14000);
         } else {
             alert(`Withdrawal failed! ${data}`)
         }
-
-        // axios.post(`/users/transactions`, { username: this.props.username, currencySymbol: symbol, destinationAddress: destinationAddress.trim(), amount: amount })
-        //     .then(response => {
-        //         const { successful, data } = response.data;
-        //         if (successful) {
-        //             axios.get(`/users/${this.props.username}/balances`)
-        //                 .then(response => {
-        //                     let { successful, data } = response.data;
-        //                     if (successful) {
-        //                         this.props.updateBalances(data)
-        //                     }
-        //                 })
-        //         } else {
-        //             alert(`Withdrawal failed! ${data}`)
-        //         }
-        //     })
-        //     .catch()
     }
 
     render() {
