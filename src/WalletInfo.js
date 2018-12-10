@@ -18,7 +18,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = dispatch => {
     return {
         updateBalances: (balances) => dispatch(updateBalances(balances)),
-        addTransaction: (transactionType, transaction) => dispatch(addTransaction(transactionType, transaction)),
+        addTransaction: (transactionType, transaction, symbol) => dispatch(addTransaction(transactionType, transaction, symbol)),
         logOut: () => dispatch(setLoginStatus({ isLoggedIn: false })),
         resetBalances: () => dispatch(resetBalances()),
         resetTransactions: () => dispatch(resetTransactions())
@@ -37,9 +37,9 @@ class WalletInfo extends Component {
 
     receiveDepositNotification(msg) {
         console.log(msg);
-        const { username, transactionHash } = msg;
+        const { username, transactionHash, symbol } = msg;
         if (username == this.props.username) {
-            this.props.addTransaction("DEPOSIT", transactionHash);
+            this.props.addTransaction("DEPOSIT", transactionHash, symbol);
             axios.get(`/users/${this.props.username}/balances`)
                 .then(response => {
                     let { successful, data } = response.data;
@@ -76,7 +76,7 @@ class WalletInfo extends Component {
         }
         const { successful, data } = transactionResponse.data;
         if (successful) {
-            this.props.addTransaction("WITHDRAWAL", data);
+            this.props.addTransaction("WITHDRAWAL", data, symbol);
             alert(`Successfully withdrew ${symbol}`);
             setTimeout(this.requestBalance, 14000);
         } else {

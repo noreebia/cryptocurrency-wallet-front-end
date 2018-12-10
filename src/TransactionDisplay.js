@@ -7,7 +7,7 @@ class TransactionDisplay extends Component {
 
         const rows = this.props.transactions.map((transaction, index) => {
             return (
-                <Transaction key={index} type={transaction.type} hash={transaction.hash} />
+                <Transaction key={index} type={transaction.type} currency={transaction.currency} hash={transaction.hash} />
             );
         })
 
@@ -15,8 +15,9 @@ class TransactionDisplay extends Component {
         <table>
             <tbody>
                 <tr>
-                    <th>Type</th>
-                    <th>Hash</th>
+                    <th>TYPE</th>
+                    <th>CURRENCY</th>
+                    <th>HASH</th>
                 </tr>
                 {rows}
             </tbody>

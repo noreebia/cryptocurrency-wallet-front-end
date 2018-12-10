@@ -10,6 +10,9 @@ class Transaction extends Component {
                     {this.props.type}
                 </td>
                 <td>
+                    {this.props.currency}
+                </td>
+                <td>
                     <a href={etherscanLink}>{this.props.hash}</a>
                 </td>
             </tr>

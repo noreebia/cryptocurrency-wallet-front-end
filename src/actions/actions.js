@@ -29,9 +29,10 @@ export const resetBalances = () => ({
     type: RESET_BALANCES,
 })
 
-export const addTransaction = (transactionType, transaction) => ({
+export const addTransaction = (transactionType, transaction, symbol) => ({
     type: ADD_TRANSACTION,
     transactionType: transactionType,
+    currency: symbol,
     payload: transaction,
 })
 
