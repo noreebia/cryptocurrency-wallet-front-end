@@ -10,7 +10,7 @@ class Transaction extends Component {
                     {this.props.type}
                 </td>
                 <td>
-                    {this.props.currency}
+                    {this.props.currency.toUpperCase()}
                 </td>
                 <td>
                     <a href={etherscanLink}>{this.props.hash}</a>
