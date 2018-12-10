@@ -51,22 +51,21 @@ class App extends Component {
   }
 
   requestAddressCreation() {
-    console.log("woohoo!");
+    console.log(`Requesting address creation...`)
     axios.post(`/users/${this.props.username}/addresses`)
       .then((response) => {
-        console.log(response);
         let { successful, data } = response.data;
         if (successful) {
           this.props.setEthAddressOfUser(data);
         } else {
           alert(`${data}`)
+          console.log(`Address creation was unsuccessful! ${data}`)
         }
       })
       .catch(error => alert(error))
   }
 
   updateUsername(event) {
-    console.log(event.target.value);
     this.setState({ usernameTextField: event.target.value });
   }
 
@@ -78,9 +77,6 @@ class App extends Component {
     axios.post("/users", { username: this.state.usernameTextField, password: this.state.passwordTextField })
       .then((response) => {
         let { successful, data } = response.data;
-        console.log(response);
-        console.log(data);
-
         if (successful) {
           alert("Successfully signed up! Now log in using your new account.")
         } else {
@@ -95,30 +91,24 @@ class App extends Component {
     axios.post("/users/validation", { username: this.state.usernameTextField, password: this.state.passwordTextField })
       .then(response => {
         let { successful, data } = response.data;
-        console.log(successful);
         if (successful) {
           this.props.logIn({ isLoggedIn: true, username: this.state.usernameTextField, password: this.state.passwordTextField });
+          console.log(`Logged in.`)
         } else {
           alert(data);
         }
       })
       .then(() => {
         if (this.props.isLoggedIn) {
-
           axios.get(`/users/${this.props.username}/addresses`)
             .then(responseToAddressQuery => {
-              console.log(responseToAddressQuery);
               const { successful, data } = responseToAddressQuery.data;
               if (successful) {
-                console.log("data: " + data);
                 this.props.setEthAddressOfUser(data);
-
                 axios.get(`/users/${this.props.username}/balances`)
                   .then(responseToBalanceQuery => {
-                    console.log("adding balance!" + JSON.stringify(responseToBalanceQuery));
                     let { successful, data } = responseToBalanceQuery.data;
                     if (successful) {
-                      console.log(data);
                       this.props.updateBalances(data)
                     }
                   })
@@ -135,6 +125,7 @@ class App extends Component {
     this.props.logOut();
     this.props.resetBalances();
     this.props.resetTransactions();
+    console.log(`Logged out`)
   }
 
   render() {

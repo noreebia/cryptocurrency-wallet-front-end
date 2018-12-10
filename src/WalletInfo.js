@@ -3,7 +3,7 @@ import CurrencyInfo from "./CurrencyInfo";
 import { connect } from 'react-redux';
 import SockJsClient from 'react-stomp';
 import axios from 'axios';
-import { updateBalances, addTransaction } from './actions/actions';
+import { updateBalances, addTransaction, setLoginStatus, resetBalances, resetTransactions } from './actions/actions';
 import TransactionDisplay from "./TransactionDisplay";
 
 const mapStateToProps = (state) => {
@@ -18,7 +18,10 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = dispatch => {
     return {
         updateBalances: (balances) => dispatch(updateBalances(balances)),
-        addTransaction: (transactionType, transaction) => dispatch(addTransaction(transactionType, transaction))
+        addTransaction: (transactionType, transaction) => dispatch(addTransaction(transactionType, transaction)),
+        logOut: () => dispatch(setLoginStatus({ isLoggedIn: false })),
+        resetBalances: () => dispatch(resetBalances()),
+        resetTransactions: () => dispatch(resetTransactions())
     }
 }
 
@@ -28,6 +31,8 @@ class WalletInfo extends Component {
         this.receiveDepositNotification = this.receiveDepositNotification.bind(this);
         this.requestWithdrawal = this.requestWithdrawal.bind(this);
         this.requestBalance = this.requestBalance.bind(this);
+        this.onWebSocketConnection = this.onWebSocketConnection.bind(this);
+        this.onWebSocketDisconnection = this.onWebSocketDisconnection.bind(this);
     }
 
     receiveDepositNotification(msg) {
@@ -37,10 +42,8 @@ class WalletInfo extends Component {
             this.props.addTransaction("DEPOSIT", transactionHash);
             axios.get(`/users/${this.props.username}/balances`)
                 .then(response => {
-                    console.log("adding balance!" + JSON.stringify(response));
                     let { successful, data } = response.data;
                     if (successful) {
-                        console.log(data);
                         this.props.updateBalances(data)
                         alert(`You have just received a deposit! You balances have been updated`);
                     }
@@ -50,19 +53,20 @@ class WalletInfo extends Component {
     }
 
     requestBalance() {
-        console.log(`requesting balance!`);
         axios.get(`/users/${this.props.username}/balances`)
-        .then((response) => {
-            const { successful, data } = response.data;
-            if (successful) {
-                this.props.updateBalances(data);
-            }
-        })
-        .catch(err => console.log(err))
+            .then((response) => {
+                const { successful, data } = response.data;
+                if (successful) {
+                    this.props.updateBalances(data);
+                } else{
+                    console.log(`Balance request failed! Details: ${data}`);
+                }
+            })
+            .catch(err => console.log(err))
     }
 
     async requestWithdrawal(symbol, destinationAddress, amount) {
-        console.log(symbol, destinationAddress, amount);
+        console.log(`Requesting ${symbol} withdrawal of ${amount} to ${destinationAddress}`);
         let transactionResponse;
         try {
             transactionResponse = await axios.post(`/users/transactions`, { username: this.props.username, currencySymbol: symbol, destinationAddress: destinationAddress.trim(), amount: amount });
@@ -76,16 +80,28 @@ class WalletInfo extends Component {
             alert(`Successfully withdrew ${symbol}`);
             setTimeout(this.requestBalance, 14000);
         } else {
-            alert(`Withdrawal failed! ${data}`)
+            alert(`Withdrawal failed!\n${data}`)
         }
+    }
+
+    onWebSocketConnection(){
+        console.log(`Websocket connection with server established`);
+    }
+
+    onWebSocketDisconnection(){
+        console.log("Websocket connection has been interrupted");
+        alert(`You have been disconnected from the server!`);
+        this.props.logOut();
+        this.props.resetBalances();
+        this.props.resetTransactions();    
     }
 
     render() {
         const listOfCurrencies = this.props.balances.map((balance, index) => <CurrencyInfo key={index} name={balance.currencyName} symbol={balance.currencySymbol} balance={balance.balance} withdraw={this.requestWithdrawal} />)
         return (
             <div>
-                {this.props.isLoggedIn && <SockJsClient url='http://localhost:8080/websocket' topics={['/topic/deposits']} onConnect={() => { console.log("connected to server!") }} onMessage={this.receiveDepositNotification}
-                    onDisconnect={() => { console.log("disconnected!"); }} ref={(client) => { this.clientRef = client }} />}
+                {this.props.isLoggedIn && <SockJsClient url='http://localhost:8080/websocket' topics={['/topic/deposits']} onConnect={this.onWebSocketConnection} onMessage={this.receiveDepositNotification}
+                    onDisconnect={this.onWebSocketDisconnection} ref={(client) => { this.clientRef = client }} />}
                 {listOfCurrencies}
                 <TransactionDisplay transactions={this.props.transactions} />
             </div>

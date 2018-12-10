@@ -33,12 +33,6 @@ class CurrencyInfo extends Component {
         return Math.floor(Math.random() * (255 - 150 + 1)) + 150;
     }
 
-    getRandomColor = () => {
-        return {
-            backgroundColor: 'rgb(' + this.getRandomRgb() + ',' + this.getRandomRgb() + ',' + this.getRandomRgb() + ')'
-        };
-    }
-
     onWithdrawalButtonClick() {
         this.props.withdraw(this.props.symbol, this.state.addressField, this.state.amountField);
         this.setState({

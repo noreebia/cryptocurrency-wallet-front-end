@@ -7,7 +7,7 @@ const initialState = [{
 },
 {
     "currencyName": "konkukcoin",
-    "currencySymbol": "kkc",
+    "currencySymbol": "kuc",
     "balance": 0
 }];
 
