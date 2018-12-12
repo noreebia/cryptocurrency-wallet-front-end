@@ -45,10 +45,8 @@ class CurrencyInfo extends Component {
 
         return (
             <div className="currencyDisplayDiv">
-                <div >
-                    <div className="currencyNameDiv" style={{ backgroundColor: `rgb(${r}, ${g}, ${b})` }}>
-                        <h1 >{this.props.name.toUpperCase()}</h1>
-                    </div>
+                <div className="currencyNameDiv" style={{ backgroundColor: `rgb(${r}, ${g}, ${b})` }}>
+                    <h1 >{this.props.name.toUpperCase()}</h1>
                 </div>
                 <div >
                     <table className="currencyInfoDiv">
@@ -72,7 +70,7 @@ class CurrencyInfo extends Component {
                                 </td>
                             </tr>
                             <tr>
-                                <td>
+                                <td colSpan="2">
                                     <button form="withdrawal" className="fullWidth" onClick={this.onWithdrawalButtonClick} >WITHDRAW TO ABOVE ADDRESS</button>
                                 </td>
                             </tr>

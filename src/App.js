@@ -181,7 +181,7 @@ class App extends Component {
         </form>
       </div>
 
-    const addressOrButton = this.props.ethAddressOfUser != "" ? <h3>YOUR ETHEREUM ADDRESS IS <br />{this.props.ethAddressOfUser}<br /></h3> : <button onClick={this.requestAddressCreation}>Create Address</button>
+    const addressOrButton = this.props.ethAddressOfUser != "" ? <h3>YOUR ETHEREUM ADDRESS IS <br />{this.props.ethAddressOfUser}<br /></h3> : <button onClick={this.requestAddressCreation} >CREATE ADDRESS</button>
 
     return (
       <div className="App">
